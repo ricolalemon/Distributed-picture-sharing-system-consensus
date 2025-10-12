@@ -115,6 +115,18 @@ INSTALL_DIR="pic-share-system"
 
 handle_existing_installation() {
     if [ -d "$INSTALL_DIR" ]; then
+        print_info "Old installation detected. Removing automatically..."
+        
+
+        cd $INSTALL_DIR
+        docker-compose down -v 2>/dev/null || true
+        cd ..
+
+  
+        rm -rf $INSTALL_DIR
+        print_success "Old installation removed"
+    fi
+    if [ -d "$INSTALL_DIR" ]; then
         print_warning "Directory '$INSTALL_DIR' already exists"
         echo ""
         echo "Options:"
