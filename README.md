@@ -19,6 +19,9 @@
 # └── requirements.txt
 
 
+docker stop $(docker ps -q)
+
+
 DEPENDENCY INSTALLATION
    conda create -n imgshare python=3.11 -y
    conda activate imgshare

@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Build and push Docker images to Docker Hub

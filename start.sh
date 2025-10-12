@@ -1,29 +1,63 @@
 #!/bin/bash
 
-echo "Starting Distributed Picture Sharing System..."
+# Quick start script for end users
+# This downloads and runs the pre-built images from Docker Hub
 
-# Generate gRPC code
-echo "Generating gRPC code..."
-cd grpc_nodes
-python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. picture.proto
+echo "=========================================="
+echo "Distributed Picture Sharing System"
+echo "Quick Start"
+echo "=========================================="
+echo ""
 
-# Copy gRPC files to web directory
-echo "Copying gRPC files to web directory..."
-cp picture_pb2.py picture_pb2_grpc.py ../web/
-cd ..
+# Check if Docker is installed
+if ! command -v docker &> /dev/null; then
+    echo "Error: Docker is not installed"
+    echo "Please install Docker first: https://docs.docker.com/get-docker/"
+    exit 1
+fi
 
-# Build and start all containers
-echo "Building and starting Docker containers..."
-docker-compose up --build -d
+# Check if docker-compose is installed
+if ! command -v docker-compose &> /dev/null; then
+    echo "Error: docker-compose is not installed"
+    echo "Please install docker-compose first"
+    exit 1
+fi
+
+# Download docker-compose file if not exists
+if [ ! -f "docker-compose.yml" ]; then
+    echo "Downloading docker-compose.yml..."
+    # In practice, users would get this file from your GitHub repo
+    echo "Please ensure docker-compose.yml is in the current directory"
+    exit 1
+fi
+
+echo "Starting all services..."
+docker-compose up -d
 
 echo ""
+echo "Waiting for services to start..."
+sleep 10
+
+echo ""
+echo "=========================================="
 echo "System started successfully!"
-echo "Web interface: http://localhost:8000"
-echo "HTTP nodes: http://localhost:5001, 5002, 5003"
-echo "gRPC nodes: localhost:50051, 50052, 50053"
+echo "=========================================="
 echo ""
-echo "Waiting for services to be ready..."
-sleep 5
+echo "Access the web interface at:"
+echo "  http://localhost:8000"
 echo ""
-echo "Use 'docker-compose logs -f' to view logs"
-echo "Use './kill.sh' to stop all services"
+echo "HTTP nodes running on:"
+echo "  - http://localhost:5001"
+echo "  - http://localhost:5002"
+echo "  - http://localhost:5003"
+echo ""
+echo "gRPC nodes running on:"
+echo "  - localhost:50051"
+echo "  - localhost:50052"
+echo "  - localhost:50053"
+echo ""
+echo "To stop the system, run:"
+echo "  docker-compose down"
+echo ""
+echo "To view logs, run:"
+echo "  docker-compose logs -f"
