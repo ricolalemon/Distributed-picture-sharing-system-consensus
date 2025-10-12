@@ -6,7 +6,7 @@ Yinhao Wu
 ## Quick Start:
 
 1. Quick Start:
-curl -fsSL https://raw.githubusercontent.com/J1anXu/Distributed-image-sharing-system/main/one_click.sh | bash
+curl -fsSL https://raw.githubusercontent.com/J1anXu/Distributed-picture-sharing-system/main/one_click.sh | bash
 
 2. Access web interface: http://localhost:8000
 

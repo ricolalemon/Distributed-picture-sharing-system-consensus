@@ -363,7 +363,7 @@ docker-compose pull
 docker-compose up -d
 echo ""
 echo "✅ System updated!"
-echo "🌐 Web Interface: http://localhost:8000"
+
 UPDATE_EOF
 
     chmod +x stop.sh start.sh restart.sh status.sh logs.sh uninstall.sh update.sh
@@ -574,6 +574,8 @@ main() {
     
     # Show final information
     print_final_info
+
+    echo "🌐 Web Page: http://localhost:8000"
 }
 
 # Run main function
