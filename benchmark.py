@@ -8,6 +8,7 @@ import random
 import string
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import io
+import matplotlib.pyplot as plt
 
 HTTP_NODES = ['http://localhost:5001', 'http://localhost:5002', 'http://localhost:5003']
 GRPC_NODES = ['localhost:50051', 'localhost:50052', 'localhost:50053']
@@ -19,6 +20,37 @@ def generate_test_image(size_kb=10):
 def random_filename():
     """Generate random filename"""
     return ''.join(random.choices(string.ascii_lowercase, k=8)) + '.jpg'
+
+class MixedBenchmark:
+    """Randomly choose HTTP or gRPC for each operation"""
+    
+    def __init__(self):
+        self.http_bench = HTTPBenchmark()
+        self.grpc_bench = GRPCBenchmark()
+    
+    def _choose_and_run(self, operation, *args):
+        if random.random() < 0.5:
+            bench = self.http_bench
+        else:
+            bench = self.grpc_bench
+        func = getattr(bench, operation)
+        return func(*args)
+    
+    def upload(self, filename, data):
+        return self._choose_and_run('upload', filename, data)
+    
+    def search(self, filename):
+        return self._choose_and_run('search', filename)
+    
+    def download(self, filename):
+        return self._choose_and_run('download', filename)
+    
+    def delete(self, filename):
+        return self._choose_and_run('delete', filename)
+    
+    def like(self, filename):
+        return self._choose_and_run('like', filename)
+
 
 class HTTPBenchmark:
     """Benchmark HTTP implementation"""
@@ -232,6 +264,39 @@ def print_results(name, results):
         else:
             print(f"\n{operation.upper()}: No successful requests")
 
+def plot_comparison(http_results, grpc_results, mixed_results, save_path='benchmark_comparison.png'):
+    operations = ['upload', 'search', 'download', 'like', 'delete']
+    
+    # 准备数据
+    data = {}
+    for op in operations:
+        data[op] = {
+            'HTTP': statistics.mean(http_results[op]) if http_results[op] else 0,
+            'gRPC': statistics.mean(grpc_results[op]) if grpc_results[op] else 0,
+            'Mixed': statistics.mean(mixed_results[op]) if mixed_results[op] else 0
+        }
+
+    # 绘图
+    fig, ax = plt.subplots(figsize=(12, 6))
+    width = 0.25
+    x = range(len(operations))
+
+    ax.bar([i - width for i in x], [data[op]['HTTP'] for op in operations], width=width, label='HTTP')
+    ax.bar(x, [data[op]['gRPC'] for op in operations], width=width, label='gRPC')
+    ax.bar([i + width for i in x], [data[op]['Mixed'] for op in operations], width=width, label='Mixed')
+
+    ax.set_xticks(x)
+    ax.set_xticklabels([op.upper() for op in operations])
+    ax.set_ylabel("Average Latency (ms)")
+    ax.set_title("Benchmark Comparison (Average Latency)")
+    ax.legend()
+
+    # 保存图片
+    plt.tight_layout()
+    plt.savefig(save_path)
+    plt.close(fig)  # 关闭 figure 避免占用内存
+
+
 if __name__ == '__main__':
     print("Distributed Picture Sharing System - Benchmark Tool")
     print("="*60)
@@ -244,6 +309,13 @@ if __name__ == '__main__':
     grpc_results = run_benchmark(GRPCBenchmark, num_requests=50)
     print_results("gRPC (Microservices)", grpc_results)
     
+    # mixup Benchmark
+    mixed_results = run_benchmark(MixedBenchmark, num_requests=50)
+    print_results("Mixed (Random Choice)", mixed_results)
+
+    plot_comparison(http_results, grpc_results, mixed_results, save_path='benchmark_comparison.png')
+
+
     print(f"\n{'='*60}")
     print("Benchmark completed!")
     print(f"{'='*60}\n")
