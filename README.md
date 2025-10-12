@@ -10,7 +10,8 @@ curl -fsSL https://raw.githubusercontent.com/J1anXu/Distributed-image-sharing-sy
 
 2. Access web interface: http://localhost:8000
 
-3. Stop the system: ./kill.sh
+3. Stop all running containers: docker stop $(docker ps -q)
+
 
 ## Deploy by yourself
 
@@ -25,7 +26,7 @@ DEPENDENCY INSTALLATION
    
 3. Access web interface: http://localhost:8000
 
-5. Stop the system: ./kill.sh
+4. Stop the system: ./stop.sh
 
 NOTES:
 - Docker and Docker Compose must be installed
