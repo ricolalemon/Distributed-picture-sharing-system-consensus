@@ -1,51 +1,27 @@
-# ============= Project Structure =============
-# distributed-picture-system/
-# ├── http_nodes/
-# │   ├── node.py
-# │   └── Dockerfile
-# ├── grpc_nodes/
-# │   ├── node.py
-# │   ├── picture.proto
-# │   ├── picture_pb2.py
-# │   └── Dockerfile
-# ├── web/
-# │   ├── app.py
-# │   └── templates/
-# │       └── index.html
-# ├── docker-compose.yml
-# ├── start.sh
-# ├── kill.sh
-# ├── benchmark.py
-# └── requirements.txt
 
+## Quick Start:
 
-docker stop $(docker ps -q)
+1. Quick Start:
+curl -fsSL https://raw.githubusercontent.com/J1anXu/Distributed-book-sharing-system/main/one_click.sh | bash
 
+2. Access web interface: http://localhost:8000
+
+3. Stop the system: ./kill.sh
+
+## Deploy by yourself
 
 DEPENDENCY INSTALLATION
    conda create -n imgshare python=3.11 -y
    conda activate imgshare
    pip install -r requirements.txt
 
+1. chmod +x start.sh kill.sh
+   
+2. ./start.sh
+   
+3. Access web interface: http://localhost:8000
 
-
-
-SETUP INSTRUCTIONS:
-
-1. Make scripts executable:
-   chmod +x start.sh kill.sh
-
-2. Start the system:
-   ./start.sh
-
-3. Access web interface:
-   http://localhost:8000
-
-4. Run benchmark (optional):
-   python benchmark.py
-
-5. Stop the system:
-   ./kill.sh
+5. Stop the system: ./kill.sh
 
 NOTES:
 - Docker and Docker Compose must be installed
