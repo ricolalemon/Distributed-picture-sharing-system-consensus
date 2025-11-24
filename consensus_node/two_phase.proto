@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package twopc;
+
+// Two-phase commit service used for both the voting and decision phases.
+service TwoPhaseService {
+  // Client entry point to start a transaction on the coordinator.
+  rpc StartTransaction(TxnRequest) returns (TxnResult);
+
+  // Phase 1: coordinator -> participants to collect votes.
+  rpc Vote(VoteRequest) returns (VoteResponse);
+
+  // Phase 2: coordinator -> participants to announce decision.
+  rpc Decision(DecisionRequest) returns (DecisionAck);
+}
+
+message TxnRequest {
+  string key = 1;
+  string value = 2;
+}
+
+message TxnResult {
+  bool success = 1;
+  string decision = 2;      // "commit" or "abort"
+  string coordinator_id = 3;
+  string txn_id = 4;
+}
+
+message VoteRequest {
+  string txn_id = 1;
+  string key = 2;
+  string value = 3;
+  string coordinator_id = 4;
+}
+
+message VoteResponse {
+  bool vote_commit = 1;
+  string node_id = 2;
+  string reason = 3;
+}
+
+message DecisionRequest {
+  string txn_id = 1;
+  bool global_commit = 2;
+  string key = 3;
+  string value = 4;
+  string coordinator_id = 5;
+}
+
+message DecisionAck {
+  string node_id = 1;
+  bool applied = 2;
+}

@@ -1,0 +1,77 @@
+services:
+  consensus-node1:
+    build:
+      context: .
+      dockerfile: consensus_node/Dockerfile
+    environment:
+      NODE_ID: consensus-node1
+      BIND_ADDR: "0.0.0.0:6000"
+      SELF_ADDR: consensus-node1:6000
+      PEERS: consensus-node1:6000,consensus-node2:6000,consensus-node3:6000,consensus-node4:6000,consensus-node5:6000
+    volumes:
+      - node1-data:/data
+    ports:
+      - "6001:6000"
+
+  consensus-node2:
+    build:
+      context: .
+      dockerfile: consensus_node/Dockerfile
+    environment:
+      NODE_ID: consensus-node2
+      BIND_ADDR: "0.0.0.0:6000"
+      SELF_ADDR: consensus-node2:6000
+      PEERS: consensus-node1:6000,consensus-node2:6000,consensus-node3:6000,consensus-node4:6000,consensus-node5:6000
+    volumes:
+      - node2-data:/data
+    ports:
+      - "6002:6000"
+
+  consensus-node3:
+    build:
+      context: .
+      dockerfile: consensus_node/Dockerfile
+    environment:
+      NODE_ID: consensus-node3
+      BIND_ADDR: "0.0.0.0:6000"
+      SELF_ADDR: consensus-node3:6000
+      PEERS: consensus-node1:6000,consensus-node2:6000,consensus-node3:6000,consensus-node4:6000,consensus-node5:6000
+    volumes:
+      - node3-data:/data
+    ports:
+      - "6003:6000"
+
+  consensus-node4:
+    build:
+      context: .
+      dockerfile: consensus_node/Dockerfile
+    environment:
+      NODE_ID: consensus-node4
+      BIND_ADDR: "0.0.0.0:6000"
+      SELF_ADDR: consensus-node4:6000
+      PEERS: consensus-node1:6000,consensus-node2:6000,consensus-node3:6000,consensus-node4:6000,consensus-node5:6000
+    volumes:
+      - node4-data:/data
+    ports:
+      - "6004:6000"
+
+  consensus-node5:
+    build:
+      context: .
+      dockerfile: consensus_node/Dockerfile
+    environment:
+      NODE_ID: consensus-node5
+      BIND_ADDR: "0.0.0.0:6000"
+      SELF_ADDR: consensus-node5:6000
+      PEERS: consensus-node1:6000,consensus-node2:6000,consensus-node3:6000,consensus-node4:6000,consensus-node5:6000
+    volumes:
+      - node5-data:/data
+    ports:
+      - "6005:6000"
+
+volumes:
+  node1-data: {}
+  node2-data: {}
+  node3-data: {}
+  node4-data: {}
+  node5-data: {}
