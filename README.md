@@ -40,12 +40,12 @@ NOTES:
 
 ## Project 3 (Group10) — 2PC + Raft Additions
 
-We added a dedicated consensus cluster (5 gRPC nodes) to satisfy Project 3 requirements. New artifacts live under `consensus_node/`:
+We added a dedicated consensus cluster (5 gRPC nodes) to satisfy Project 3 requirements. New artifacts live under `consensus_node/` (our submission repo: https://github.com/ricolalemon/Distributed-picture-sharing-system-consensus).
 - 2PC proto/service: `consensus_node/two_phase.proto`
 - Raft proto/service: `consensus_node/raft.proto`
 - Combined node implementation: `consensus_node/node.py`
 - Compose to launch 5 nodes: `docker-compose-consensus.yml` (ports 6001–6005 mapped to container port 6000)
- - Our submission repo: https://github.com/ricolalemon/-Distributed-picture-sharing-system-consensus
+ - Our submission repo: https://github.com/ricolalemon/Distributed-picture-sharing-system-consensus
  - Contributors: Muhan Zhang (2PC/Raft core, Docker), Danhua Zhao (testing, logs/screenshots, report)
 
 ### Run the consensus cluster
